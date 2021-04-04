@@ -61,7 +61,7 @@
                             ],
                             "locationId": 30,
                             "title": "Hello new",
-                            "image": "1a1eb1e4106fff0cc3467873f0f39cab.jpeg",
+                            "image": "https://images.unsplash.com/photo-1565402161570-7ca09ba499f3?ixid=MXwxMjA3fDB8MHxzZWFyY2h8OXx8YnVpbGRpbmclMjBzY2hvb2x8ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
                             "description": "Mantap"
                         }
                     },
@@ -82,7 +82,7 @@
                             ],
                             "locationId": 29,
                             "title": "Rumah saya Edit",
-                            "image": "0ea59991df2cb96b4df6e32307ea20ff.png",
+                            "image": "https://images.unsplash.com/photo-1566498929078-14614995ab70?ixid=MXwxMjA3fDB8MHxzZWFyY2h8OHx8YnVpbGRpbmclMjBzY2hvb2x8ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
                             "description": "oke mantap Edit"
                         }
                     },
@@ -103,7 +103,7 @@
                             ],
                             "locationId": 22,
                             "title": "Update Baru Gambar",
-                            "image": "d09444b68d8b72daa324f97c999c2301.jpeg",
+                            "image": "https://images.unsplash.com/photo-1609348511219-00baf6946ec9?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NHx8YnVpbGRpbmclMjBzY2hvb2x8ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60d09444b68d8b72daa324f97c999c2301.jpeg",
                             "description": "Update Baru"
                         }
                     },
@@ -124,8 +124,8 @@
                             ],
                             "locationId": 19,
                             "title": "awdwad",
-                            "image": "f0b88ffd980a764b9fca60d853b300ff.png",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+                            "image": "https://images.unsplash.com/photo-1554173058-1ff7bcff4beb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTh8fGJ1aWxkaW5nJTIwc2Nob29sfGVufDB8MnwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                            "description": "Oke."
                         }
                     },
                     {
@@ -145,8 +145,8 @@
                             ],
                             "locationId": 18,
                             "title": "adwawd",
-                            "image": "4c35cb1b76af09e6205f94024e093fe6.jpeg",
-                            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+                            "image": "https://images.unsplash.com/photo-1587934924167-a3a04e138374?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8YnVpbGRpbmclMjBzY2hvb2x8ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                            "description": "Ok."
                         }
                     },
                     {
@@ -166,7 +166,7 @@
                             ],
                             "locationId": 12,
                             "title": "adawd",
-                            "image": "7c8c949fd0499eb50cb33787d680778c.jpeg",
+                            "image": "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8YnVpbGRpbmclMjBzY2hvb2x8ZW58MHwyfDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
                             "description": "awdwad"
                         }
                     }
@@ -195,8 +195,33 @@
                     markerElement.style.width = "50px"
                     markerElement.style.height = "50px"
 
+                    const content = `
+                                    <div style="overflow-y: auto; max-height: 400px; width: 100%;">
+                                        <table class="table table-sm mt-2">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Title</td>
+                                                    <td>${title}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Picture</td>
+                                                    <td><img src="${image}" loading="lazy" width="150"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Description</td>
+                                                    <td>${description}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>`
+
+                    const popUp = new mapboxgl.Popup({
+                        offset: 25
+                    }).setHTML(content).setMaxWidth("400px")
+
                     new mapboxgl.Marker(markerElement)
                         .setLngLat(geometry.coordinates)
+                        .setPopup(popUp)
                         .addTo(map)
                 })
             }
