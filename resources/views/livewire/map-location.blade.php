@@ -10,7 +10,7 @@
                         Form
                     </div>
                     <div class="card-body scroll">
-                        <form wire:submit.prevent="saveLocation">
+                        <form @if ($isEdit) wire:submit.prevent="updateLocation" @else wire:submit.prevent="saveLocation" @endif>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -61,6 +61,10 @@
                                 @if ($image)
                                     <img src="{{ $image->temporaryUrl() }}" class="img-fluid mt-2" height="150">
                                 @endif
+                                @if ($imgUrl && !$image)
+                                    <img src="{{ asset('/storage/images/' . $imgUrl) }}" class="img-fluid mt-2"
+                                        height="150">
+                                @endif
                                 @error('image')
                                     <small class="text-danger">
                                         {{ $message }}
@@ -68,8 +72,18 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary form-control" type="submit">Add Location</button>
+                                <button class="btn btn-primary form-control" type="submit">
+                                    {{ $isEdit ? 'Update Location' : 'Submit Location' }}
+                                </button>
                             </div>
+                            @if ($isEdit)
+                                <div class="form-group">
+                                    <button wire:click="deleteLocation" class="btn btn-danger form-control"
+                                        type="submit">
+                                        Delete Location
+                                    </button>
+                                </div>
+                            @endif
                         </form>
                     </div>
                 </div>
@@ -116,28 +130,28 @@
                     const imageStorage = "{{ asset('/storage/images') }}" + "/" + image
 
                     const content = `
-                        <div style="overflow-y: auto; max-height: 400px; width: 100%;">
-                            <table class="table table-sm mt-2">
-                                <tbody>
-                                    <tr>
-                                        <td>Title</td>
-                                        <td>${title}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Picture</td>
-                                        <td><img src="${imageStorage}" loading="lazy" width="150"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Description</td>
-                                        <td>${description}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>`
+                                                        <div style="overflow-y: auto; max-height: 400px; width: 100%;">
+                                                            <table class="table table-sm mt-2">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Title</td>
+                                                                        <td>${title}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Picture</td>
+                                                                        <td><img src="${imageStorage}" loading="lazy" width="150"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Description</td>
+                                                                        <td>${description}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>`
 
-                    markerElement.addEventListener('click', () => {
+                    markerElement.addEventListener('click', (e) => {
                         const locationId = e.toElement.id
-                        @this.findLocationById
+                        @this.findLocationById(locationId)
                     })
 
                     const popUp = new mapboxgl.Popup({
@@ -155,6 +169,16 @@
 
             window.addEventListener('locationAdded', (e) => {
                 loadLocation(JSON.parse(e.detail))
+            })
+
+            window.addEventListener('updateLocation', (e) => {
+                loadLocation(JSON.parse(e.detail))
+                $('.mapboxgl-popup').remove()
+            })
+
+            window.addEventListener('deleteLocation', (e) => {
+                $('.marker' + e.detail).remove()
+                $('.mapboxgl-popup').remove()
             })
 
             map.addControl(new mapboxgl.NavigationControl())
