@@ -17,6 +17,7 @@ composer install
 Kedua jalankan perintah:
 
 ```sh
+php artisan storage:link
 php artisan migrate
 ```
 
